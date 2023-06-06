@@ -1,1 +1,53 @@
-<p>form-tipo works!</p>
+
+<form
+  [formGroup]="formGroup"
+  (ngSubmit)="onSubmit()"
+  class="form"
+>
+  <div class="formTipo">
+    <h1>Formulário </h1>
+  <mat-form-field>
+    <mat-label>Nome:</mat-label>
+    <input matInput formControlName="nome">
+    <mat-error *ngIf="handleError('nome', 'required')">
+      O nome do tipo é obrigatório
+    </mat-error>
+    <mat-error *ngIf="handleError('nome', 'minlength')">
+      Mínimo 3 caracteres
+    </mat-error>
+    <mat-error *ngIf="handleError('nome', 'maxlength')">
+      Máximo 50 caracteres
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Idade:</mat-label>
+    <input matInput formControlName="idade">
+    <mat-error *ngIf="handleError('idade', 'required')">
+      A idade é obrigatória
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Número da camisa:</mat-label>
+    <input matInput formControlName="numeroCamisa">
+    <mat-error *ngIf="handleError('numeroCamisa', 'required')">
+      O número da camisa é obrigatório
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Time:</mat-label>
+    <input matInput formControlName="time">
+    <mat-error *ngIf="handleError('time', 'required')">
+      O nome do time é obrigatório
+    </mat-error>
+    <mat-error *ngIf="handleError('time', 'minlength')">
+      Mínimo 3 caracteres
+    </mat-error>
+    <mat-error *ngIf="handleError('time', 'maxlength')">
+      Máximo 50 caracteres
+    </mat-error>
+  </mat-form-field>
+
+
+  <button mat-raised-button color="primary" type="submit">Salvar</button>
+</div>
+</form>
