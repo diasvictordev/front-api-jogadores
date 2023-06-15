@@ -25,6 +25,64 @@ export class JogadorControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation obterPorId
+   */
+  static readonly ObterPorIdPath = '/api/$(app.api.version)/jogador/{id}';
+
+  /**
+   * Obter os dados completos de uma entidiade pelo id informado!
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `obterPorId()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  obterPorId$Response(params: {
+    id: number;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, JogadorControllerService.ObterPorIdPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Obter os dados completos de uma entidiade pelo id informado!
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `obterPorId$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  obterPorId(params: {
+    id: number;
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.obterPorId$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+
+  /**
    * Path part for operation alterar
    */
   static readonly AlterarPath = '/api/$(app.api.version)/jogador/{id}';

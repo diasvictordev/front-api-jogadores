@@ -17,6 +17,11 @@ export const tipoRoutes: Routes = [
         path: "novo",
         component: FormTipoComponent
 
+      },
+      {
+        path: ":id",
+        component: FormTipoComponent
+
       }
     ]
   }
