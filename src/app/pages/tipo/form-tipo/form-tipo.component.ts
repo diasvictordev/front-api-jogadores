@@ -26,10 +26,10 @@ export class FormTipoComponent {
     private dialog: MatDialog,
     ){
     this.createForm();
-    this.prepararEdicao();
+    //this.prepararEdicao();
   }
 
-  prepararEdicao(){
+  /*prepararEdicao(){
     const paramId = this.route.snapshot.paramMap.get('codigo');
     if (paramId){
       const codigo = parseInt(paramId);
@@ -46,7 +46,7 @@ export class FormTipoComponent {
         }
       )
     }
-  }
+  }*/
 
   createForm() {
     this.formGroup = this.formBuilder.group({
@@ -110,7 +110,7 @@ public handleError = (controlName: string, errorName: string) => {
         },
       },
     });
-  
+
   }*/
 
 confirmarAcao(jogadorDto: JogadorDto, acao: string) {
