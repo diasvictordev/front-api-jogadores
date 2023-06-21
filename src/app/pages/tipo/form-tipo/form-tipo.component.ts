@@ -45,67 +45,32 @@ export class FormTipoComponent {
 
 onSubmit() {
   if (this.formGroup.valid) {
-    console.log("Dados:", this.formGroup.value);
-    this.jogadorService.incluir({body: this.formGroup.value})
-      .subscribe(retorno =>{
-        console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, this.acao);
-        this.router.navigate(["/tipo"]);
+    if(!this.id){
+      this.realizarInclusao();
+    }else{
+      this.realizarEdicao();
+    }
+  }
+}
+
+private realizarInclusao() {
+  console.log("Dados:", this.formGroup.value);
+  this.jogadorService.incluir({body: this.formGroup.value})
+    .subscribe(retorno => {
+      console.log("Retorno:", retorno);
+      this.confirmarAcao(retorno, this.ACAO_INCLUIR);
+      this.router.navigate(["/tipo"]);
     }, erro => {
-        console.log("Erro:", +erro);
-        alert("Erro ao incluir");
+      console.log("Erro:" , erro);
     })
-  }
 }
 
-private prepararEdicao() {
-  const paramId = this.route.snapshot.paramMap.get('id');
-  if(paramId) {
-    const codigo = parseInt(paramId);
-    console.log("codigo", paramId);
-    this.jogadorService.obterPorId({id: this.id})
-      .subscribe(retorno =>
-    {
-      this.acao = this.ACAO_EDITAR;
-      console.log("retorno", retorno);
-      //this.idCodigo = retorno.idCodigo;
-      this.formGroup.patchValue(retorno);
-    })
-  }
-}
-
-  realizarEdicao() {
-    console.log("Dados:", this.formGroup.value);
-    this.jogadorService.alterar({id: this.id, body: this.formGroup.value }).subscribe(
-      retorno => {
-        console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, this.ACAO_EDITAR);
-      },
-      erro => {
-        console.log("Erro:", erro);
-        //this.showError(erro.Error, this.ACAO_EDITAR)
-
-      }
-    );
-  }
-
+  
 public handleError = (controlName: string, errorName: string) => {
   return this.formGroup.controls[controlName].hasError(errorName);
 };
 
-  private realizarInclusao() {
-    console.log("Dados:", this.formGroup.value);
-    this.jogadorService.incluir({ body: this.formGroup.value }).subscribe(
-      retorno => {
-        console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, this.ACAO_INCLUIR);
-      },
-      erro => {
-        console.log("Erro:", erro);
-        //this.showError(erro.Error, this.ACAO_INCLUIR);
-      }
-    );
-  }
+
 
   /*showError(erro: MessageResponse, acao: string) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
@@ -120,16 +85,46 @@ public handleError = (controlName: string, errorName: string) => {
 
   }*/
 
-confirmarAcao(jogadorDto: JogadorDto, acao: string) {
-  const dialogRef = this.dialog.open(ConfirmationDialog, {
-    data: {
-      titulo: 'Mensagem!!!',
-      mensagem: `Ação de ${acao} dados: ${jogadorDto.nome} (ID: ${jogadorDto.id}) realiza com sucesso!`,
-      textoBotoes: {
-        ok: 'ok',
+  confirmarAcao(jogadorDto: JogadorDto, acao: string) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        titulo: 'Mensagem!!!',
+        mensagem: `A ação de ${acao} dados: ${jogadorDto.nome} (ID: ${jogadorDto.id}) foi realizada com sucesso!`,
+        textoBotoes: {
+          ok: 'ok',
+        },
       },
-    },
-  });
+    });
+  }
 
+
+private prepararEdicao() {
+  const paramId = this.route.snapshot.paramMap.get('id');
+  if(paramId) {
+    const id = parseInt(paramId);
+    console.log("codigo", paramId);
+    this.jogadorService.obterPorId({id: id})
+      .subscribe(retorno =>
+    {
+      this.acao = this.ACAO_EDITAR;
+      console.log("retorno", retorno);
+      this.formGroup.patchValue(retorno);
+    })
+  }
 }
+
+
+
+private realizarEdicao() {
+  console.log("Dados:", this.formGroup.value);
+  this.jogadorService.alterar({id: this.id, body: this.formGroup.value})
+    .subscribe(retorno => {
+      console.log("Retorno:", retorno);
+      this.confirmarAcao(retorno, this.ACAO_EDITAR);
+      this.router.navigate(["/tipo"]);
+    }, erro => {
+      console.log("Erro:", erro.error);
+    })
+}
+
 }
