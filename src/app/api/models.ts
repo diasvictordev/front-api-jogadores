@@ -1,3 +1,3 @@
-export { JogadorDadosAlteraveisDto } from './models/jogador-dados-alteraveis-dto';
+export { FieldResponse } from './models/field-response';
+export { MessageResponse } from './models/message-response';
 export { JogadorDto } from './models/jogador-dto';
-export { JogadorListaDto } from './models/jogador-lista-dto';

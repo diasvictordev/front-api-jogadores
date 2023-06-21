@@ -42,19 +42,17 @@ export class ListaTipoComponent implements OnInit{
 
   remover(jogadorDto: JogadorDto){
     console.log("Removido", jogadorDto.id);
-    this.jogadorcontrollerService.remover({id: jogadorDto.id || 0}).subscribe(retorno=>{
-      this.buscarDados();
-      alert("Excluído com sucesso!");
-      console.log("Excluído:", retorno);
-    },
-    error =>{
-      if (error.status === 404){
-        alert("Jogador não existe mais");
-      }
-      else{
-      alert("Erro ao excluir");
-      console.log("Erro:", error);
-      }
+    this.jogadorcontrollerService.remover({id: jogadorDto.id || 0}).subscribe(retorno =>{
+        this.buscarDados();
+        this.showMensagemSimples("Excluído com sucesso !");
+        console.log("Exclusão", retorno);
+      }, error =>{
+        if (error.status === 404) {
+          this.showMensagemSimples("Ingresso cadastrado não existe mais!!");
+        } else {
+          this.showMensagemSimples("Erro ao excluir");
+          console.log("Erro:", error);
+        }
     }
     )
 

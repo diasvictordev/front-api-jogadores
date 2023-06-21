@@ -6,6 +6,8 @@ import { ConfirmationDialog } from 'src/app/core/confirmation-dialog/confirmatio
 import {ConfirmationDialogResult} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import { ActivatedRoute, Router } from '@angular/router';
+//import {Message, MessageService} from "../../../api/models/message-response";
+
 @Component({
   selector: 'app-form-tipo',
   templateUrl: './form-tipo.component.html',
@@ -24,12 +26,14 @@ export class FormTipoComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
+    //private messageSevice: MessageService
     ){
     this.createForm();
-    //this.prepararEdicao();
+    this.prepararEdicao();
+    
   }
 
-  /*prepararEdicao(){
+  prepararEdicao(){
     const paramId = this.route.snapshot.paramMap.get('codigo');
     if (paramId){
       const codigo = parseInt(paramId);
@@ -38,7 +42,6 @@ export class FormTipoComponent {
         retorno => {
           this.acao = this.ACAO_EDITAR;
           console.log("retorno", retorno);
-          this.id = retorno.id;
           this.formGroup.patchValue(retorno);
         },error => {
           console.log("erro", error);
@@ -46,7 +49,7 @@ export class FormTipoComponent {
         }
       )
     }
-  }*/
+  }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
