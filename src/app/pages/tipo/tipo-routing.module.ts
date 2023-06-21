@@ -19,7 +19,7 @@ export const tipoRoutes: Routes = [
 
       },
       {
-        path: ":id",
+        path: ":codigo",
         component: FormTipoComponent
 
       }

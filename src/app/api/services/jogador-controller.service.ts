@@ -40,7 +40,7 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<JogadorDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, JogadorControllerService.ObterPorIdPath, 'get');
     if (params) {
@@ -48,13 +48,13 @@ export class JogadorControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<JogadorDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -72,10 +72,10 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<JogadorDto> {
+): Observable<any> {
 
     return this.obterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<JogadorDto>) => r.body as JogadorDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -98,7 +98,8 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<{
+}>> {
 
     const rb = new RequestBuilder(this.rootUrl, JogadorControllerService.AlterarPath, 'put');
     if (params) {
@@ -113,7 +114,8 @@ export class JogadorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<{
+        }>;
       })
     );
   }
@@ -132,10 +134,13 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<{
+}> {
 
     return this.alterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<{
+}>) => r.body as {
+})
     );
   }
 
@@ -157,7 +162,7 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<JogadorDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, JogadorControllerService.RemoverPath, 'delete');
     if (params) {
@@ -165,13 +170,13 @@ export class JogadorControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<JogadorDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -189,10 +194,10 @@ export class JogadorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<JogadorDto> {
+): Observable<any> {
 
     return this.remover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<JogadorDto>) => r.body as JogadorDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 

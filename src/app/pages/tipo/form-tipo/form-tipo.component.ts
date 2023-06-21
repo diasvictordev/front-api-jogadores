@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { JogadorDto } from 'src/app/api/models/jogador-dto';
-import { JogadorControllerService } from 'src/app/api/services';
+import { JogadorControllerService } from 'src/app/api/services/jogador-controller.service';
 import { ConfirmationDialog } from 'src/app/core/confirmation-dialog/confirmation-dialog.component';
 import {ConfirmationDialogResult} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -99,17 +99,21 @@ public handleError = (controlName: string, errorName: string) => {
 
 
 private prepararEdicao() {
-  const paramId = this.route.snapshot.paramMap.get('id');
+  const paramId = this.route.snapshot.paramMap.get('codigo');
   if(paramId) {
-    const id = parseInt(paramId);
+    const codigo = parseInt(paramId);
     console.log("codigo", paramId);
-    this.jogadorService.obterPorId({id: id})
+    this.jogadorService.obterPorId({id: codigo})
       .subscribe(retorno =>
     {
       this.acao = this.ACAO_EDITAR;
+      this.id = retorno.id;
       console.log("retorno", retorno);
       this.formGroup.patchValue(retorno);
-    })
+    }
+    ,error => {
+      console.log("erro", error);}
+      )
   }
 }
 
