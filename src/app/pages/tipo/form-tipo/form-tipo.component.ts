@@ -33,23 +33,6 @@ export class FormTipoComponent {
     
   }
 
-  prepararEdicao(){
-    const paramId = this.route.snapshot.paramMap.get('codigo');
-    if (paramId){
-      const codigo = parseInt(paramId);
-      console.log("codigo",paramId);
-      this.jogadorService.obterPorId({id: codigo}).subscribe(
-        retorno => {
-          this.acao = this.ACAO_EDITAR;
-          console.log("retorno", retorno);
-          this.formGroup.patchValue(retorno);
-        },error => {
-          console.log("erro", error);
-          //this.messageService.addMsgWarning(`Erro ao buscar ID: ${codigo}, mensagem: ${error.message}`);
-        }
-      )
-    }
-  }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
@@ -60,16 +43,37 @@ export class FormTipoComponent {
     })
 }
 
-onSubmit(){
-  if(this.formGroup.valid){
-    if(!this.id){
-      this.realizarInclusao();
-    }
-  else{
-    this.realizarEdicao();
-  }
+onSubmit() {
+  if (this.formGroup.valid) {
+    console.log("Dados:", this.formGroup.value);
+    this.jogadorService.incluir({body: this.formGroup.value})
+      .subscribe(retorno =>{
+        console.log("Retorno:", retorno);
+        this.confirmarAcao(retorno, this.acao);
+        this.router.navigate(["/tipo"]);
+    }, erro => {
+        console.log("Erro:", +erro);
+        alert("Erro ao incluir");
+    })
   }
 }
+
+private prepararEdicao() {
+  const paramId = this.route.snapshot.paramMap.get('id');
+  if(paramId) {
+    const codigo = parseInt(paramId);
+    console.log("codigo", paramId);
+    this.jogadorService.obterPorId({id: this.id})
+      .subscribe(retorno =>
+    {
+      this.acao = this.ACAO_EDITAR;
+      console.log("retorno", retorno);
+      //this.idCodigo = retorno.idCodigo;
+      this.formGroup.patchValue(retorno);
+    })
+  }
+}
+
   realizarEdicao() {
     console.log("Dados:", this.formGroup.value);
     this.jogadorService.alterar({id: this.id, body: this.formGroup.value }).subscribe(

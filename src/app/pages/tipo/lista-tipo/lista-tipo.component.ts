@@ -70,7 +70,16 @@ export class ListaTipoComponent implements OnInit{
         dado: jogadorDto
       },
     });
-  }
+  
+
+  dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
+    if (confirmed?.resultado) {
+      this.remover(confirmed.dado);
+    }
+  });
+}
+
+
   showMensagemSimples( mensagem: string, duracao: number = 2000) {
     this.snackBar.open(mensagem, 'Fechar', {
       duration: duracao,
