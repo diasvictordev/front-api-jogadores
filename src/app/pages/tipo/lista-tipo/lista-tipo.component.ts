@@ -30,8 +30,6 @@ export class ListaTipoComponent implements OnInit{
   'time',
   'acao']
    tipoListaDataSource: MatTableDataSource <JogadorDto> = new MatTableDataSource<JogadorDto>([]);
-   private apiUrl = 'https://api.openai.com/v1/chat/completions'; // Substitua pela URL correta da API do ChatGPT
-   private apiKey = '';
    
   
 
@@ -50,18 +48,24 @@ export class ListaTipoComponent implements OnInit{
   }
 
 
-  enviarMensagem(prompt: JogadorDto): void {
-    this.openaiService.enviarMensagem({prompt: prompt.nome}).subscribe(response => {
-      //Não está puxando o nome do jogador
-      console.log('Resposta do ChatGPT:',  response.choices[0].message.content); // Mostra a resposta no console
-    }, error => {
-      console.error('Erro na chamada da API do ChatGPT:', error);
-    });
+resposta: string = '';
+mostrarElemento : boolean = false;
+
+
+enviarMensagem(prompt: JogadorDto): void {
+  this.openaiService.enviarMensagem(prompt.nome).subscribe(response => {
+    console.log('Resposta do ChatGPT:', response.choices[0].message.content); 
+    this.resposta = response.choices[0].message.content;
+    this.exibirTexto(this.resposta);
+  }, error => {
+    console.error('Erro na chamada da API do ChatGPT:', error);
+  });
 }
 
-
-  
-  
+exibirTexto(mensagem: string) {
+  this.resposta = mensagem; 
+  this.mostrarElemento = true;
+}
 
   private buscarDados() {
     this.jogadorcontrollerService.listAll().subscribe(data => {
