@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { JogadorDto } from 'src/app/api/models/jogador-dto';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import { JogadorControllerService } from 'src/app/api/services/jogador-controller.service';
 import { ConfirmationDialog, ConfirmationDialogResult } from 'src/app/core/confirmation-dialog/confirmation-dialog.component';
+import { OpenaiService } from '../openai.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { query } from '@angular/animations';
+
+
 
 
 
@@ -13,7 +19,10 @@ import { ConfirmationDialog, ConfirmationDialogResult } from 'src/app/core/confi
   templateUrl: './lista-tipo.component.html',
   styleUrls: ['./lista-tipo.component.scss']
 })
+
+
 export class ListaTipoComponent implements OnInit{
+  
   colunasMostrar = ['id',
   'nome',
   'idade',
@@ -21,24 +30,45 @@ export class ListaTipoComponent implements OnInit{
   'time',
   'acao']
    tipoListaDataSource: MatTableDataSource <JogadorDto> = new MatTableDataSource<JogadorDto>([]);
+   private apiUrl = 'https://api.openai.com/v1/chat/completions'; // Substitua pela URL correta da API do ChatGPT
+   private apiKey = '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';
+   
   
 
 
   constructor(public jogadorcontrollerService: JogadorControllerService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private openaiService: OpenaiService,
+    private http: HttpClient
     ){
   }
+
 
   ngOnInit(): void {
     this.buscarDados();
   }
+
+
+  enviarMensagem(prompt: JogadorDto): void {
+    this.openaiService.enviarMensagem({prompt: prompt.nome}).subscribe(response => {
+      //Não está puxando o nome do jogador
+      console.log('Resposta do ChatGPT:',  response.choices[0].message.content); // Mostra a resposta no console
+    }, error => {
+      console.error('Erro na chamada da API do ChatGPT:', error);
+    });
+}
+
+
+  
+  
 
   private buscarDados() {
     this.jogadorcontrollerService.listAll().subscribe(data => {
       this.tipoListaDataSource.data = data;
     })
   }
+
 
   remover(jogadorDto: JogadorDto){
     console.log("Removido", jogadorDto.id);
@@ -48,7 +78,7 @@ export class ListaTipoComponent implements OnInit{
         console.log("Exclusão", retorno);
       }, error =>{
         if (error.status === 404) {
-          this.showMensagemSimples("Ingresso cadastrado não existe mais!!");
+          this.showMensagemSimples("Jogador cadastrado não existe mais!!");
         } else {
           this.showMensagemSimples("Erro ao excluir");
           console.log("Erro:", error);
@@ -58,6 +88,8 @@ export class ListaTipoComponent implements OnInit{
 
   }
 
+  
+  
   confirmarExcluir(jogadorDto: JogadorDto) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {

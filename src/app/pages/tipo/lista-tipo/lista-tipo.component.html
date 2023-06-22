@@ -39,10 +39,16 @@
           <button mat-mini-fab class="btnEditar" color="primary" [routerLink]="['/tipo',element.id]">
             <mat-icon>edit</mat-icon>
           </button>
+          <button mat-mini-fab color="primary" (click)="enviarMensagem(element.nome)">
+            <mat-icon>sports_soccer</mat-icon>
+          </button>
           </td>
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: colunasMostrar;"></tr>
     </table>
+
+    <p>
+    </p>
   </section>
