@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class OpenaiService {
   private apiUrl = 'https://api.openai.com/v1/chat/completions'; // Substitua pela URL correta da API do ChatGPT
-  private apiKey = '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'; // Substitua pela sua chave de API válida
+  private apiKey = ''; // Substitua pela sua chave de API válida
 
   constructor(private http: HttpClient) { }
 
