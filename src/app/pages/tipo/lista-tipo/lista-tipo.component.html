@@ -49,6 +49,10 @@
     <tr mat-row *matRowDef="let row; columns: colunasMostrar;"></tr>
     </table>
 
-    <p>
-    </p>
+   <div id="texto" *ngIf="mostrarElemento">
+      <h1>Times em que o jogador jogou: </h1>
+        <p id="resposta">
+          {{resposta}}
+        </p>
+  </div>
   </section>
