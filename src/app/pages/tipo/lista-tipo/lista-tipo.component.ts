@@ -31,7 +31,7 @@ export class ListaTipoComponent implements OnInit{
   'acao']
    tipoListaDataSource: MatTableDataSource <JogadorDto> = new MatTableDataSource<JogadorDto>([]);
    private apiUrl = 'https://api.openai.com/v1/chat/completions'; // Substitua pela URL correta da API do ChatGPT
-   private apiKey = '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';
+   private apiKey = '';
    
   
 
